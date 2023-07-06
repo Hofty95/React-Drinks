@@ -3,10 +3,13 @@ import {Formik, Field, ErrorMessage} from 'formik'
 import {Form, Row, Col, Alert, Button} from 'react-bootstrap'
 import  * as Yup from 'yup'
 import { useCategories } from '../../hooks/useCategories'
+import { useDrinks } from '../../hooks/useDrinks'
 
 export const SearchForm = () => {
 
   const {categories} = useCategories()
+
+  const {getDrink, loading} = useDrinks()
 
   const initialValues ={
     name:'',
@@ -14,11 +17,13 @@ export const SearchForm = () => {
   }
 
   const validationSchema = Yup.object({
-    name : Yup.string().required('El nombre es obligatorio')
+    name : Yup.string().required('El nombre es obligatorio'),
+    category: Yup.string().required('La categoria es obligatoria')
   })
 
   const handleSubmit = (values) => {
     console.log(values)
+    getDrink(values)
   }
 
   return (
@@ -67,6 +72,11 @@ export const SearchForm = () => {
                       ))
                     }
                   </Field>
+                  <ErrorMessage
+                  name='category'
+                  component={Form.Text}
+                  className='text-danger'
+                  />
                 </Form.Group>
               </Col>
             </Row>
@@ -74,11 +84,11 @@ export const SearchForm = () => {
               <Col md={3}>
               <Button
               variant='danger'
-              disabled={false}
+              disabled={loading}
               className='w-100'
               type='submit'
               >
-                Buscar Bebidas
+                {loading ? 'Buscando' : 'Buscar Bebida'}
               </Button>
               </Col>
             </Row>
