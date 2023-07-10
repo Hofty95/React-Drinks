@@ -8,6 +8,8 @@ const DrinksProvider = ({children}) => {
     const [drinks, setDrinks] = useState([])
     const [loading, setLoading] = useState(false)
     const [recipe, setRecipe] = useState({})
+    const [idDrink, setIdDrink] = useState(null)
+    const [modal, setModal] = useState(false)
 
 
     const getDrink = async (data) => {
@@ -26,35 +28,47 @@ const DrinksProvider = ({children}) => {
         }
     }
 
-    const getRecipe = async (drinkId) => {
-        try {
 
-            setLoading(true)
+    useEffect(() => {
 
-            const recipeData = await getRecipeService(drinkId)
+        const getRecipe = async () => {
 
-            setRecipe(recipeData)
-            
-        } catch (error) {
-            console.error
-        } finally {
-            setLoading(false)
-        }
+            if(!idDrink) return
+
+            try {
+                setLoading(true)
+    
+                const recipeData = await getRecipeService(idDrink)
+    
+                setRecipe(recipeData)
+
+                setModal((preview) => !preview)
+            } catch (error) {
+                console.error
+            } finally {
+                setLoading(false)
+            }
+        };
+        getRecipe()
+    }, [idDrink])
+
+    const handleDrinkIdClick = (id) => {
+        setIdDrink(id)
+    }
+    
+    const handleModalClick = () => {
+        setModal((preview) => !preview)
     }
 
     const contextValue = {
         drinks,
         getDrink,
         loading,
-        getRecipe
+        handleDrinkIdClick,
+        recipe,
+        modal,
+        handleModalClick
     }
-
-/*     useEffect(() => {
-        getDrink({
-            ingredient : 'Vodka',
-            category : 'Shot'
-        })
-    }, []) */
     
 
   return (

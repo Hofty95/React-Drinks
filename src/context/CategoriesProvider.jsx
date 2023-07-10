@@ -11,8 +11,6 @@ const CategoriesProvider = ({children}) => {
         try {
             const categoriesData = await getCategoriesServices()
 
-            console.log(categoriesData);
-
             setCategories(categoriesData)
 
         } catch (error) {

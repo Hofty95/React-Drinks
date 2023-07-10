@@ -6,7 +6,6 @@ export const getCategoriesServices = async () => {
     try {
         const url = `${apiUrl}list.php?c=list`
         const {data} = await axios.get(url)
-        console.log(data.drinks);
         return data.drinks || []
 
     } catch (error) {

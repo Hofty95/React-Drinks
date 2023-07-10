@@ -10,7 +10,7 @@ export const DrinkList = () => {
     <Row>
         {
             drinks.map(drink => (
-                <DrinkCard key={drink.idDrink} drink={drink}/>
+              <DrinkCard key={drink.idDrink} drink={drink}/>
             ))
         }
     </Row>
